@@ -43,9 +43,9 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 
 // Load Controllers
 var articleController = require('./app/controllers/article');
+var userController    = require('./app/controllers/user');
 
-
-// Routes for the API ============================
+// API Endpoints ============================
 // ===============================================
 var router = express.Router();     // Get instance of express Router
 
@@ -59,6 +59,14 @@ router.route('/articles/:article_id')
 	.get(articleController.getArticle)
 	.put(articleController.putArticle)
 	.delete(articleController.deleteArticle);
+
+// Creates endpoint handlers for /users
+router.route('/users')
+	.post(userController.postUsers)
+	.get(userController.getUser);
+
+
+
 
 
 // REGISTER OUR ROUTES -------------------------------
