@@ -41,7 +41,7 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
-// Models ==================================================
+// Load Models ==================================================
 var Article		 = require('./app/models/article.js');
 
 
@@ -52,33 +52,34 @@ var router = express.Router();     // Get instance of express Router
 
 router.use(function(req, res, next) {
 	// do logging
-	console.log('Something is happening.');
+	console.log('API action just happened.');
 	next(); //make sure we go to the next routes and don't stop here
 });
 
 
 //test route
 router.get('/', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    res.json({ message: 'Welcome to the SOURCE  API' });   
 });
 
-router.route('/articles')
 
+router.route('/articles')
     // create a bear (accessed at POST http://localhost:8080/api/article)
     .post(function(req, res) {
         
         var article = new Article();      // create a new instance of the article model
-        article.name = req.body.name;  // set the article name (comes from the request)
+
+        article.url = req.body.url;    // set the article url (comes from the request)
 
         // save the bear and check for errors
         article.save(function(err) {
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Article created!' });
+            res.json({ message: 'Article created!' + article });
         });
-        
     })
+
 
     // get all the bears (accessed at GET http://localhost:8080/api/bears)
     .get(function(req, res) {
@@ -107,7 +108,7 @@ router.route('/articles/:article_id')
         });
     })
 
-        // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
+    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
     .put(function(req, res) {
 
         // use our bear model to find the bear we want
@@ -116,7 +117,7 @@ router.route('/articles/:article_id')
             if (err)
                 res.send(err);
 
-            article.name = req.body.name;  // update the bears info
+            article.url = req.body.url;  // update the bears info
 
             // save the bear
             article.save(function(err) {
@@ -140,9 +141,6 @@ router.route('/articles/:article_id')
             res.json({ message: 'Successfully deleted' });
         });
     });
-
-
-
 
 
 
