@@ -41,108 +41,24 @@ app.use(flash()); // use connect-flash for flash messages stored in session
 require('./app/routes.js')(app, passport); // load our routes and pass in our app and fully configured passport
 
 
-// Load Models ==================================================
-var Article		 = require('./app/models/article.js');
+// Load Controllers
+var articleController = require('./app/controllers/article');
 
 
 // Routes for the API ============================
 // ===============================================
 var router = express.Router();     // Get instance of express Router
 
-
-router.use(function(req, res, next) {
-	// do logging
-	console.log('API action just happened.');
-	next(); //make sure we go to the next routes and don't stop here
-});
-
-
-//test route
-router.get('/', function(req, res) {
-    res.json({ message: 'Welcome to the SOURCE  API' });   
-});
-
-
+// Creates an enpoint handler for /articles
 router.route('/articles')
-    // create a bear (accessed at POST http://localhost:8080/api/article)
-    .post(function(req, res) {
-        
-        var article = new Article();      // create a new instance of the article model
+	.post(articleController.postArticles)
+	.get(articleController.getArticles);
 
-        article.url = req.body.url;    // set the article url (comes from the request)
-
-        // save the bear and check for errors
-        article.save(function(err) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Article created!' + article });
-        });
-    })
-
-
-    // get all the bears (accessed at GET http://localhost:8080/api/bears)
-    .get(function(req, res) {
-        Article.find(function(err, articles) {
-            if (err)
-                res.send(err);
-
-            res.json(articles);
-        });
-    })
-
-
-
-
-
-// on routes that end in /bears/:bear_id
-// ----------------------------------------------------
+// Creates an endpoint handler for /articles:article_id
 router.route('/articles/:article_id')
-
-    // get the bear with that id (accessed at GET http://localhost:8080/api/bears/:bear_id)
-    .get(function(req, res) {
-        Article.findById(req.params.article_id, function(err, article) {
-            if (err)
-                res.send(err);
-            res.json(article);
-        });
-    })
-
-    // update the bear with this id (accessed at PUT http://localhost:8080/api/bears/:bear_id)
-    .put(function(req, res) {
-
-        // use our bear model to find the bear we want
-        Article.findById(req.params.article_id, function(err, article) {
-
-            if (err)
-                res.send(err);
-
-            article.url = req.body.url;  // update the bears info
-
-            // save the bear
-            article.save(function(err) {
-                if (err)
-                    res.send(err);
-
-                res.json({ message: 'Article updated!' });
-            });
-
-        });
-    })
-
-    // delete the bear with this id (accessed at DELETE http://localhost:8080/api/bears/:bear_id)
-    .delete(function(req, res) {
-        Article.remove({
-            _id: req.params.article_id
-        }, function(err, article) {
-            if (err)
-                res.send(err);
-
-            res.json({ message: 'Successfully deleted' });
-        });
-    });
-
-
+	.get(articleController.getArticle)
+	.put(articleController.putArticle)
+	.delete(articleController.deleteArticle);
 
 
 // REGISTER OUR ROUTES -------------------------------
