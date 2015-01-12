@@ -13,7 +13,7 @@ exports.postUsers = function(req, res) {
 		if (err)
 			res.send(err);
 
-		res.json({ message: 'New Uesr has been added!' });
+		res.json({ message: 'New User has been added!' });
 	});
 };
 

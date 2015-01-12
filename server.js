@@ -45,7 +45,6 @@ require('./app/routes.js')(app, passport); // load our routes and pass in our ap
 // Load Controllers
 var articleController = require('./app/controllers/article');
 var userController    = require('./app/controllers/user');
-// move this to /config
 var authController    = require('./app/controllers/auth');
 
 // API Endpoints ============================
