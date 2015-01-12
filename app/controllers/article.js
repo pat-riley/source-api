@@ -8,6 +8,7 @@ exports.postArticles = function(req, res) {
 
 	// Set the article properties that came from the POST data
 	article.url = req.body.url;
+    article.userSummary = req.body.userSummary;
     article.userID = req.user._id;
 
 	// save the bear and check for errors

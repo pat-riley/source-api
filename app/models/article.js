@@ -6,6 +6,7 @@ var Schema       = mongoose.Schema;
 // define the schema for our user model
 var ArticleSchema = new Schema({
     url: String,
+    userSummary: String,
     userID: String
 });
 
